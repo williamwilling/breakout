@@ -5,7 +5,7 @@ ball = {
   
   -- The speed of the ball in pixels per second. (Technically, this should be called 'velocity', but
   -- let's not be pedantic.)
-  speed = { x = 500, y = 20 },
+  speed = { x = 500, y = 200 },
   
   -- The radius of the ball in pixels. Note that the radius is half of the entire width of the ball
   -- (which is called the diameter). So, while the ball's sprite is 24 pixels by 24 pixels, the
@@ -13,7 +13,7 @@ ball = {
   -- to store the radius than the diameter.
   radius = 12
 }
-  
+
 -- Everything we need to know about the current state of the playing field.
 field = {
   -- The coordinates of the upperleft corner of the playing field.
@@ -44,6 +44,17 @@ function love.update(time)
   ball.top = ball.position.y - ball.radius
   ball.bottom = ball.position.y + ball.radius
   
+  -- Did the ball hit the left side of the playing field?
+  if ball.left <= field.left then
+    -- Yes, make the ball move to the right.
+    ball.speed.x = -ball.speed.x
+    
+    -- The ball (probably) moved a little beyond the left side of the playing field. Move the ball
+    -- back into the field.
+    local distance = field.left - ball.left
+    ball.position.x = ball.position.x + 2 * distance
+  end
+  
   -- Did the ball hit the right side of the playing field?
   if ball.right >= field.right then
     -- Yes, make the ball move to the left.
@@ -53,6 +64,28 @@ function love.update(time)
     -- back into the field.
     local distance = ball.right - field.right
     ball.position.x = ball.position.x - 2 * distance
+  end
+  
+  -- Did the ball hit the top side of the playing field?
+  if ball.top <= field.top then
+    -- Yes, make the ball move to the bottom.
+    ball.speed.y = -ball.speed.y
+    
+    -- The ball (probably) moved a little beyond the top side of the playing field. Move the ball
+    -- back into the field.
+    local distance = field.left - ball.top
+    ball.position.y = ball.position.y + 2 * distance
+  end
+  
+  -- Did the ball hit the bottom side of the playing field?
+  if ball.bottom >= field.bottom then
+    -- Yes, make the ball move to the top.
+    ball.speed.y = -ball.speed.y
+    
+    -- The ball (probably) moved a little beyond the top side of the playing field. Move the ball
+    -- back into the field.
+    local distance = ball.bottom - field.bottom
+    ball.position.y = ball.position.y - 2 * distance
   end
 end
 
