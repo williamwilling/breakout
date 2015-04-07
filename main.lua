@@ -1,11 +1,11 @@
 -- Everything we need to know about the current state of the bal.
 ball = {
   -- The position of the center of the ball in pixels.
-  position = { x = 25, y = 150 },
+  position = { x = 25, y = 130 },
   
   -- The speed of the ball in pixels per second. (Technically, this should be called 'velocity', but
   -- let's not be pedantic.)
-  speed = { x = 500, y = 200 },
+  speed = { x = 100, y = 0 },
   
   -- The radius of the ball in pixels. Note that the radius is half of the entire width of the ball
   -- (which is called the diameter). So, while the ball's sprite is 24 pixels by 24 pixels, the
@@ -93,6 +93,26 @@ function love.update(time)
     -- back into the field.
     local distance = ball.bottom - field.bottom
     ball.position.y = ball.position.y - 2 * distance
+  end
+  
+  -- Check if the ball collides with any of the blocks.
+  for _, block in ipairs(field.blocks) do
+    -- Calculate the coordinates of the edges of the block.
+    local left = block.x
+    local right = block.x + sprites.block:getWidth()
+    local top = block.y
+    local bottom = block.y + sprites.block:getHeight()
+    
+    -- Did the ball collide with the left side of the block?
+    if ball.right >= left and ball.position.y >= top and ball.position.y <= bottom then
+      -- Yes, make the ball move to the left.
+      ball.speed.x = -ball.speed.x
+      
+      -- The ball (probably) moved a little beyond the left side of the block. Move the ball
+      -- back so it doesn't overlap the block.
+      local distance = ball.right - left
+      ball.position.x = ball.position.x - 2 * distance
+    end
   end
 end
 
