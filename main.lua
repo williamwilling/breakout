@@ -24,8 +24,8 @@ field = {
   
   -- The blocks in the playing field.
   blocks = {
-    { x = 120, y = 120, width = 24, height = 12 },
-    { x = 120, y = 240, width = 48, height = 24 }
+    { x = 120, y = 120, width = 24, height = 12, color = { 255, 0, 0 } },
+    { x = 120, y = 240, width = 48, height = 24, color = { 0, 255, 0 } }
   }
 }
 
@@ -98,8 +98,13 @@ end
 function love.draw()
   -- Draw the blocks.
   for _, block in ipairs(field.blocks) do
+    love.graphics.setColor(block.color)
     love.graphics.rectangle("fill", block.x, block.y, block.width, block.height)
   end
+  
+  -- Set the color back to white, otherwise the rest of the sprites will have the same color as the
+  -- block that was drawn last.
+  love.graphics.setColor(255, 255, 255, 255)
   
   -- We store the position of the center of the ball, but when drawing a sprite, Löve wants to know
   -- the position of the upperleft corner, so we translate the position before drawing.
