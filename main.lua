@@ -1,7 +1,7 @@
 -- Everything we need to know about the current state of the bal.
 ball = {
   -- The position of the center of the ball in pixels.
-  position = { x = 25, y = 145 },
+  position = { x = 225, y = 135 },
   
   -- The speed of the ball in pixels per second. (Technically, this should be called 'velocity', but
   -- let's not be pedantic.)
@@ -104,7 +104,7 @@ function love.update(time)
     local bottom = block.y + sprites.block:getHeight()
     
     -- Did the ball hit the left side of the block?
-    if ball.right >= left and ball.position.y >= top and ball.position.y <= bottom then
+    if ball.right >= left and ball.left <= left and ball.position.y >= top and ball.position.y <= bottom then
       -- Yes, make the ball move to the left.
       ball.speed.x = -ball.speed.x
       
