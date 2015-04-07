@@ -1,11 +1,14 @@
 ball = {
   position = { x = 25, y = 150 },
   speed = { x = 50, y = 20 },
-  size = 30
+  size = 24
 }
+
+sprites = {}
   
 function love.load()
   love.window.setMode(1280, 720, { fullscreen = false, vsync = false })
+  sprites.ball = love.graphics.newImage("assets/ball.png")
 end
 
 function love.update(time)
@@ -18,5 +21,5 @@ function love.draw()
   local x = ball.position.x - radius
   local y = ball.position.y - radius
   
-  love.graphics.circle("fill", x, y, radius)
+  love.graphics.draw(sprites.ball, x, y)
 end
