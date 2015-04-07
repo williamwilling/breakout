@@ -1,11 +1,11 @@
 -- Everything we need to know about the current state of the bal.
 ball = {
   -- The position of the center of the ball in pixels.
-  position = { x = 225, y = 135 },
+  position = { x = 150, y = 180 },
   
   -- The speed of the ball in pixels per second. (Technically, this should be called 'velocity', but
   -- let's not be pedantic.)
-  speed = { x = -100, y = 0 },
+  speed = { x = -5, y = 100 },
   
   -- The radius of the ball in pixels. Note that the radius is half of the entire width of the ball
   -- (which is called the diameter). So, while the ball's sprite is 24 pixels by 24 pixels, the
@@ -25,7 +25,7 @@ field = {
   -- The blocks in the playing field.
   blocks = {
     { x = 120, y = 120, color = { 255,   0, 0 } },
-    { x = 420, y = 120, color = {   0, 255, 0 } }
+    { x = 120, y = 240, color = {   0, 255, 0 } }
   }
 }
 
@@ -123,6 +123,28 @@ function love.update(time)
       -- back so it doesn't overlap the block.
       local distance = right - ball.left
       ball.position.x = ball.position.x + 2 * distance
+    end
+    
+    -- Did the ball hit the top side of the block?
+    if ball.bottom >= top and ball.top <= top and ball.position.x >= left and ball.position.x <= right then
+      -- Yes, make the ball move to the top.
+      ball.speed.y = -ball.speed.y
+      
+      -- The ball (probably) moved a little beyond the top side of the block. Move the ball
+      -- back so it doesn't overlap the block.
+      local distance = ball.bottom - top
+      ball.position.y = ball.position.y - 2 * distance
+    end
+    
+    -- Did the ball hit the bottom side of the block?
+    if ball.top <= bottom and ball.bottom >= bottom and ball.position.x >= left and ball.position.x <= right then
+      -- Yes, make the ball move to the bottom.
+      ball.speed.y = -ball.speed.y
+      
+      -- The ball (probably) moved a little beyond the bottom side of the block. Move the ball
+      -- back so it doesn't overlap the block.
+      local distance = bottom - ball.top
+      ball.position.y = ball.position.y + 2 * distance
     end
     
     -- Did the ball hit the bottom left corner of the block?
