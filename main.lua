@@ -147,10 +147,22 @@ function love.update(time)
       ball.position.y = ball.position.y + 2 * distance
     end
     
-    -- Did the ball hit the bottom left corner of the block?
+    -- Did the ball hit the top left corner of the block?
     local dx = ball.position.x - left
-    local dy = ball.position.y - bottom
+    local dy = ball.position.y - top
     local distance = math.sqrt(dx * dx + dy * dy)   -- Pythagoras
+    
+    if distance < ball.radius then
+      -- Yes, make the ball move to the top left while keeping the speed the same.
+      local speed = math.sqrt(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y)    -- Pythagoras, again!
+      ball.speed.x = -speed * math.sqrt(2)
+      ball.speed.y = -speed * math.sqrt(2)
+    end
+    
+    -- Did the ball hit the bottom left corner of the block?
+    dx = ball.position.x - left
+    dy = ball.position.y - bottom
+    distance = math.sqrt(dx * dx + dy * dy)   -- Pythagoras
     
     if distance < ball.radius then
       -- Yes, make the ball move to the bottom left while keeping the speed the same.
