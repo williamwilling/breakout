@@ -24,8 +24,8 @@ field = {
   
   -- The blocks in the playing field.
   blocks = {
-    { x = 120, y = 120, width = 24, height = 12, color = { 255, 0, 0 } },
-    { x = 120, y = 240, width = 48, height = 24, color = { 0, 255, 0 } }
+    { x = 120, y = 120, color = { 255,   0, 0 } },
+    { x = 120, y = 240, color = {   0, 255, 0 } }
   }
 }
 
@@ -36,6 +36,7 @@ function love.load()
   -- Load all the sprites we need. 'Sprite' is basically game dev speak for 'image'.
   sprites = {}
   sprites.ball = love.graphics.newImage("assets/ball.png")
+  sprites.block = love.graphics.newImage("assets/block.png")
 end
 
 function love.update(time)
@@ -99,7 +100,7 @@ function love.draw()
   -- Draw the blocks.
   for _, block in ipairs(field.blocks) do
     love.graphics.setColor(block.color)
-    love.graphics.rectangle("fill", block.x, block.y, block.width, block.height)
+    love.graphics.draw(sprites.block, block.x, block.y)
   end
   
   -- Set the color back to white, otherwise the rest of the sprites will have the same color as the
