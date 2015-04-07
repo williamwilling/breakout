@@ -5,7 +5,7 @@ ball = {
   
   -- The speed of the ball in pixels per second. (Technically, this should be called 'velocity', but
   -- let's not be pedantic.)
-  speed = { x = -5, y = 100 },
+  speed = { x = 5, y = 100 },
   
   -- The radius of the ball in pixels. Note that the radius is half of the entire width of the ball
   -- (which is called the diameter). So, while the ball's sprite is 24 pixels by 24 pixels, the
@@ -168,6 +168,18 @@ function love.update(time)
       -- Yes, make the ball move to the bottom left while keeping the speed the same.
       local speed = math.sqrt(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y)    -- Pythagoras, again!
       ball.speed.x = -speed * math.sqrt(2)
+      ball.speed.y = speed * math.sqrt(2)
+    end
+    
+    -- Did the ball hit the bottom right corner of the block?
+    dx = ball.position.x - right
+    dy = ball.position.y - bottom
+    distance = math.sqrt(dx * dx + dy * dy)   -- Pythagoras
+    
+    if distance < ball.radius then
+      -- Yes, make the ball move to the bottom right while keeping the speed the same.
+      local speed = math.sqrt(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y)    -- Pythagoras, again!
+      ball.speed.x = speed * math.sqrt(2)
       ball.speed.y = speed * math.sqrt(2)
     end
   end
