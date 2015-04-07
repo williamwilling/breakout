@@ -1,7 +1,7 @@
 ball = {
   position = { x = 25, y = 150 },
   speed = { x = 50, y = 20 },
-  size = 24
+  radius = 12
 }
 
 sprites = {}
@@ -17,9 +17,8 @@ function love.update(time)
 end
 
 function love.draw()
-  local radius = ball.size / 2
-  local x = ball.position.x - radius
-  local y = ball.position.y - radius
+  local x = ball.position.x - ball.radius
+  local y = ball.position.y - ball.radius
   
   love.graphics.draw(sprites.ball, x, y)
 end
