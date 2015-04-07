@@ -20,7 +20,13 @@ field = {
   left = 0, top = 0,
   
   -- The coordinates of the lowerright corner of the playing field.
-  right = 1280, bottom = 720
+  right = 1280, bottom = 720,
+  
+  -- The blocks in the playing field.
+  blocks = {
+    { x = 120, y = 120, width = 24, height = 12 },
+    { x = 120, y = 240, width = 48, height = 24 }
+  }
 }
 
 function love.load()
@@ -90,6 +96,11 @@ function love.update(time)
 end
 
 function love.draw()
+  -- Draw the blocks.
+  for _, block in ipairs(field.blocks) do
+    love.graphics.rectangle("fill", block.x, block.y, block.width, block.height)
+  end
+  
   -- We store the position of the center of the ball, but when drawing a sprite, Löve wants to know
   -- the position of the upperleft corner, so we translate the position before drawing.
   local x = ball.position.x - ball.radius
