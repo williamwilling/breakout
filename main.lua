@@ -1,7 +1,7 @@
 -- Everything we need to know about the current state of the bal.
 ball = {
   -- The position of the center of the ball in pixels.
-  position = { x = 25, y = 130 },
+  position = { x = 25, y = 145 },
   
   -- The speed of the ball in pixels per second. (Technically, this should be called 'velocity', but
   -- let's not be pedantic.)
@@ -16,10 +16,10 @@ ball = {
 
 -- Everything we need to know about the current state of the playing field.
 field = {
-  -- The coordinates of the upperleft corner of the playing field.
+  -- The coordinates of the upper left corner of the playing field.
   left = 0, top = 0,
   
-  -- The coordinates of the lowerright corner of the playing field.
+  -- The coordinates of the bottom right corner of the playing field.
   right = 1280, bottom = 720,
   
   -- The blocks in the playing field.
@@ -103,7 +103,7 @@ function love.update(time)
     local top = block.y
     local bottom = block.y + sprites.block:getHeight()
     
-    -- Did the ball collide with the left side of the block?
+    -- Did the ball hit the left side of the block?
     if ball.right >= left and ball.position.y >= top and ball.position.y <= bottom then
       -- Yes, make the ball move to the left.
       ball.speed.x = -ball.speed.x
@@ -112,6 +112,18 @@ function love.update(time)
       -- back so it doesn't overlap the block.
       local distance = ball.right - left
       ball.position.x = ball.position.x - 2 * distance
+    end
+    
+    -- Did the ball hit the bottom left corner of the block?
+    local dx = ball.position.x - left
+    local dy = ball.position.y - bottom
+    local distance = math.sqrt(dx * dx + dy * dy)   -- Pythagoras
+    
+    if distance < ball.radius then
+      -- Yes, make the ball move to the bottom left while keeping the speed the same.
+      local speed = math.sqrt(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y)    -- Pythagoras, again!
+      ball.speed.x = -speed * math.sqrt(2)
+      ball.speed.y = speed * math.sqrt(2)
     end
   end
 end
@@ -128,7 +140,7 @@ function love.draw()
   love.graphics.setColor(255, 255, 255, 255)
   
   -- We store the position of the center of the ball, but when drawing a sprite, Löve wants to know
-  -- the position of the upperleft corner, so we translate the position before drawing.
+  -- the position of the upper left corner, so we translate the position before drawing.
   local x = ball.position.x - ball.radius
   local y = ball.position.y - ball.radius
   
