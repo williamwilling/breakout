@@ -5,7 +5,7 @@ ball = {
   
   -- The speed of the ball in pixels per second. (Technically, this should be called 'velocity', but
   -- let's not be pedantic.)
-  speed = { x = 100, y = 0 },
+  speed = { x = -100, y = 0 },
   
   -- The radius of the ball in pixels. Note that the radius is half of the entire width of the ball
   -- (which is called the diameter). So, while the ball's sprite is 24 pixels by 24 pixels, the
@@ -25,7 +25,7 @@ field = {
   -- The blocks in the playing field.
   blocks = {
     { x = 120, y = 120, color = { 255,   0, 0 } },
-    { x = 120, y = 240, color = {   0, 255, 0 } }
+    { x = 420, y = 120, color = {   0, 255, 0 } }
   }
 }
 
@@ -112,6 +112,17 @@ function love.update(time)
       -- back so it doesn't overlap the block.
       local distance = ball.right - left
       ball.position.x = ball.position.x - 2 * distance
+    end
+    
+    -- Did the ball hit the right side of the block?
+    if ball.left <= right and ball.right >= right and ball.position.y >= top and ball.position.y <= bottom then
+      -- Yes, make the ball move to the right.
+      ball.speed.x = -ball.speed.x
+      
+      -- The ball (probably) moved a little beyond the right side of the block. Move the ball
+      -- back so it doesn't overlap the block.
+      local distance = right - ball.left
+      ball.position.x = ball.position.x + 2 * distance
     end
     
     -- Did the ball hit the bottom left corner of the block?
