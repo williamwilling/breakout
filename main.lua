@@ -16,6 +16,15 @@ ball = {
   radius = 12
 }
 
+-- Everything we need to know about the current state of the paddle.
+paddle = {
+  -- The position of the upper left corner of the paddle in pixels.
+  x = 604, y = 680,
+  
+  -- The size of the paddle in pixels.
+  width = 72, height = 48
+}
+
 -- Everything we need to know about the current state of the playing field.
 field = {
   -- The coordinates of the upper left corner of the playing field.
@@ -41,6 +50,7 @@ function love.load()
   sprites = {}
   sprites.ball = love.graphics.newImage("assets/ball.png")
   sprites.block = love.graphics.newImage("assets/block.png")
+  sprites.paddle = love.graphics.newImage("assets/paddle.png")
 end
 
 function love.update(time)
@@ -83,4 +93,7 @@ function love.draw()
   
   -- Draw the sprite of the ball.
   love.graphics.draw(sprites.ball, x, y)
+  
+  -- Draw the sprite of the paddle.
+  love.graphics.draw(sprites.paddle, paddle.x, paddle.y)
 end
