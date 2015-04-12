@@ -1,11 +1,11 @@
--- Everything we need to know about the current state of the bal.
+-- Everything we need to know about the current state of the ball.
 ball = {
   -- The position of the center of the ball in pixels.
   position = { x = 152, y = 180 },
   
   -- The speed of the ball in pixels per second. (Technically, this should be called 'velocity', but
   -- let's not be pedantic.)
-  speed = { x = 5, y = 100 },
+  speed = { x = 4, y = 100 },
   
   -- The radius of the ball in pixels. Note that the radius is half of the entire width of the ball
   -- (which is called the diameter). So, while the ball's sprite is 24 pixels by 24 pixels, the
@@ -25,7 +25,9 @@ field = {
   -- The blocks in the playing field.
   blocks = {
     { x = 120, y = 120, color = { 255,   0, 0 } },
-    { x = 120, y = 240, color = {   0, 255, 0 } }
+    { x = 120, y = 240, color = {   0, 255, 0 } },
+    { x = 250, y = 120, color = { 255,   0, 0 } },
+    { x = 250, y = 240, color = {   0, 255, 0 } }
   }
 }
 
@@ -155,8 +157,8 @@ function love.update(time)
     if distance < ball.radius then
       -- Yes, make the ball move to the top left while keeping the speed the same.
       local speed = math.sqrt(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y)    -- Pythagoras, again!
-      ball.speed.x = -speed * math.sqrt(2)
-      ball.speed.y = -speed * math.sqrt(2)
+      ball.speed.x = -0.5 * math.sqrt(2) * speed
+      ball.speed.y = -0.5 * math.sqrt(2) * speed
     end
     
     -- Did the ball hit the bottom left corner of the block?
@@ -167,8 +169,8 @@ function love.update(time)
     if distance < ball.radius then
       -- Yes, make the ball move to the bottom left while keeping the speed the same.
       local speed = math.sqrt(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y)    -- Pythagoras, again!
-      ball.speed.x = -speed * math.sqrt(2)
-      ball.speed.y = speed * math.sqrt(2)
+      ball.speed.x = -0.5 * math.sqrt(2) * speed
+      ball.speed.y = 0.5 * math.sqrt(2) * speed
     end
     
     -- Did the ball hit the bottom right corner of the block?
@@ -179,8 +181,8 @@ function love.update(time)
     if distance < ball.radius then
       -- Yes, make the ball move to the bottom right while keeping the speed the same.
       local speed = math.sqrt(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y)    -- Pythagoras, again!
-      ball.speed.x = speed * math.sqrt(2)
-      ball.speed.y = speed * math.sqrt(2)
+      ball.speed.x = 0.5 * math.sqrt(2) * speed
+      ball.speed.y = 0.5 * math.sqrt(2) * speed
     end
     
     -- Did the ball hit the top right corner of the block?
@@ -191,8 +193,8 @@ function love.update(time)
     if distance < ball.radius then
       -- Yes, make the ball move to the top right while keeping the speed the same.
       local speed = math.sqrt(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y)    -- Pythagoras, again!
-      ball.speed.x = speed * math.sqrt(2)
-      ball.speed.y = -speed * math.sqrt(2)
+      ball.speed.x = 0.5 * math.sqrt(2) * speed
+      ball.speed.y = -0.5 * math.sqrt(2) * speed
     end
   end
 end
