@@ -39,11 +39,12 @@ field = {
   -- The blocks in the playing field.
   -- Note that the width and the height of the blocks are used for collision detection, but have no
   -- effect on the block's sprite.
+  -- The strength indicates how many hits it takes to destroy the block.
   blocks = {
-    { x = 120, y = 120, width = 48, height = 24, color = { 255,   0, 0 } },
-    { x = 120, y = 240, width = 48, height = 24, color = {   0, 255, 0 } },
-    { x = 250, y = 120, width = 48, height = 24, color = { 255,   0, 0 } },
-    { x = 250, y = 240, width = 48, height = 24, color = {   0, 255, 0 } }
+    { x = 120, y = 120, width = 48, height = 24, strength = 1, color = { 255,   0, 0 } },
+    { x = 120, y = 240, width = 48, height = 24, strength = 2, color = {   0, 255, 0 } },
+    { x = 250, y = 120, width = 48, height = 24, strength = 1, color = { 255,   0, 0 } },
+    { x = 250, y = 240, width = 48, height = 24, strength = 2, color = {   0, 255, 0 } }
   }
 }
 
@@ -101,8 +102,11 @@ function love.update(time)
     if not block.destroyed then
       -- No, bounce the ball off the sides and corners of the block.
       if bounce(ball, block) then
-        -- Remove the block from the playing field.
-        block.destroyed = true
+        -- The block was hit, so reduces the block's strength.
+        block.strength = block.strength - 1
+        
+        -- Remember whether the block is destroyed now.
+        block.destroyed = block.strength == 0
       end
     end
   end
