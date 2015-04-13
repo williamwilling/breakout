@@ -1,5 +1,5 @@
 -- Checks for a collision between the ball and a block and, if a collision occurs, changes the
--- ball's speed so it moves away from the block.
+-- ball's speed so it moves away from the block. Returns true if the ball hits the block.
 function bounce(ball, block)
   -- Calculate the coordinates of the edges of the block.
   local left = block.x
@@ -16,6 +16,8 @@ function bounce(ball, block)
     -- back so it doesn't overlap the block.
     local distance = ball.right - left
     ball.position.x = ball.position.x - 2 * distance
+    
+    return true
   end
   
   -- Did the ball hit the right side of the block?
@@ -27,6 +29,8 @@ function bounce(ball, block)
     -- back so it doesn't overlap the block.
     local distance = right - ball.left
     ball.position.x = ball.position.x + 2 * distance
+    
+    return true
   end
   
   -- Did the ball hit the top side of the block?
@@ -38,6 +42,8 @@ function bounce(ball, block)
     -- back so it doesn't overlap the block.
     local distance = ball.bottom - top
     ball.position.y = ball.position.y - 2 * distance
+    
+    return true
   end
   
   -- Did the ball hit the bottom side of the block?
@@ -49,6 +55,8 @@ function bounce(ball, block)
     -- back so it doesn't overlap the block.
     local distance = bottom - ball.top
     ball.position.y = ball.position.y + 2 * distance
+    
+    return true
   end
   
   -- Did the ball hit the top left corner of the block?
@@ -61,6 +69,8 @@ function bounce(ball, block)
     local speed = math.sqrt(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y)    -- Pythagoras, again!
     ball.speed.x = -0.5 * math.sqrt(2) * speed
     ball.speed.y = -0.5 * math.sqrt(2) * speed
+    
+    return true
   end
   
   -- Did the ball hit the bottom left corner of the block?
@@ -73,6 +83,8 @@ function bounce(ball, block)
     local speed = math.sqrt(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y)    -- Pythagoras, again!
     ball.speed.x = -0.5 * math.sqrt(2) * speed
     ball.speed.y = 0.5 * math.sqrt(2) * speed
+    
+    return true
   end
   
   -- Did the ball hit the bottom right corner of the block?
@@ -85,6 +97,8 @@ function bounce(ball, block)
     local speed = math.sqrt(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y)    -- Pythagoras, again!
     ball.speed.x = 0.5 * math.sqrt(2) * speed
     ball.speed.y = 0.5 * math.sqrt(2) * speed
+    
+    return true
   end
   
   -- Did the ball hit the top right corner of the block?
@@ -97,6 +111,8 @@ function bounce(ball, block)
     local speed = math.sqrt(ball.speed.x * ball.speed.x + ball.speed.y * ball.speed.y)    -- Pythagoras, again!
     ball.speed.x = 0.5 * math.sqrt(2) * speed
     ball.speed.y = -0.5 * math.sqrt(2) * speed
+    
+    return true
   end
 end
 

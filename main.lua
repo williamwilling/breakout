@@ -97,16 +97,24 @@ function love.update(time)
   
   -- Check if the ball collides with any of the blocks.
   for _, block in ipairs(field.blocks) do
-    -- Bounce the ball off the sides and corners of the block.
-    bounce(ball, block)
+    -- Has the block been destroyed already?
+    if not block.destroyed then
+      -- No, bounce the ball off the sides and corners of the block.
+      if bounce(ball, block) then
+        -- Remove the block from the playing field.
+        block.destroyed = true
+      end
+    end
   end
 end
 
 function love.draw()
   -- Draw the blocks.
   for _, block in ipairs(field.blocks) do
-    love.graphics.setColor(block.color)
-    love.graphics.draw(sprites.block, block.x, block.y)
+    if not block.destroyed then
+      love.graphics.setColor(block.color)
+      love.graphics.draw(sprites.block, block.x, block.y)
+    end
   end
   
   -- Set the color back to white, otherwise the rest of the sprites will have the same color as the
