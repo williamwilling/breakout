@@ -77,7 +77,7 @@ function love.update(time)
       paddle.x = field.right - paddle.width
     end
   end
-  
+    
   -- Move the ball, taking its speed into account.
   ball.position.x = ball.position.x + ball.speed.x * time
   ball.position.y = ball.position.y + ball.speed.y * time
@@ -91,6 +91,9 @@ function love.update(time)
   
   -- Bounce the ball off the sides of the playing field.
   bounce_inside(ball, field)
+  
+  -- Bounce the ball off the paddle.
+  bounce(ball, paddle)
   
   -- Check if the ball collides with any of the blocks.
   for _, block in ipairs(field.blocks) do
