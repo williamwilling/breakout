@@ -60,10 +60,20 @@ function love.update(time)
   -- Move the paddle, based on the player's input.
   if love.keyboard.isDown("left") then
     paddle.x = paddle.x - paddle.speed * time
+    
+    -- Make sure the paddle doesn't leave the playing field.
+    if paddle.x < field.left then
+      paddle.x = field.left
+    end
   end
   
   if love.keyboard.isDown("right") then
     paddle.x = paddle.x + paddle.speed * time
+    
+    -- Make sure the paddle doesn't leave the playing field.
+    if paddle.x + paddle.width > field.right then
+      paddle.x = field.right - paddle.width
+    end
   end
   
   -- Move the ball, taking its speed into account.
