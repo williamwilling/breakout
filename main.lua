@@ -37,11 +37,13 @@ field = {
   right = 1280, bottom = 720,
   
   -- The blocks in the playing field.
+  -- Note that the width and the height of the blocks are used for collision detection, but have no
+  -- effect on the block's sprite.
   blocks = {
-    { x = 120, y = 120, color = { 255,   0, 0 } },
-    { x = 120, y = 240, color = {   0, 255, 0 } },
-    { x = 250, y = 120, color = { 255,   0, 0 } },
-    { x = 250, y = 240, color = {   0, 255, 0 } }
+    { x = 120, y = 120, width = 48, height = 24, color = { 255,   0, 0 } },
+    { x = 120, y = 240, width = 48, height = 24, color = {   0, 255, 0 } },
+    { x = 250, y = 120, width = 48, height = 24, color = { 255,   0, 0 } },
+    { x = 250, y = 240, width = 48, height = 24, color = {   0, 255, 0 } }
   }
 }
 

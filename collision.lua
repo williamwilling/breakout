@@ -3,9 +3,9 @@
 function bounce(ball, block)
   -- Calculate the coordinates of the edges of the block.
   local left = block.x
-  local right = block.x + sprites.block:getWidth()
+  local right = block.x + block.width
   local top = block.y
-  local bottom = block.y + sprites.block:getHeight()
+  local bottom = block.y + block.height
   
   -- Did the ball hit the left side of the block?
   if ball.right >= left and ball.left <= left and ball.position.y >= top and ball.position.y <= bottom then
