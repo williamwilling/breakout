@@ -22,7 +22,10 @@ paddle = {
   x = 604, y = 680,
   
   -- The size of the paddle in pixels.
-  width = 72, height = 48
+  width = 72, height = 48,
+  
+  -- The speed with which the paddle moves in pixels per second.
+  speed = 200
 }
 
 -- Everything we need to know about the current state of the playing field.
@@ -54,6 +57,15 @@ function love.load()
 end
 
 function love.update(time)
+  -- Move the paddle, based on the player's input.
+  if love.keyboard.isDown("left") then
+    paddle.x = paddle.x - paddle.speed * time
+  end
+  
+  if love.keyboard.isDown("right") then
+    paddle.x = paddle.x + paddle.speed * time
+  end
+  
   -- Move the ball, taking its speed into account.
   ball.position.x = ball.position.x + ball.speed.x * time
   ball.position.y = ball.position.y + ball.speed.y * time
