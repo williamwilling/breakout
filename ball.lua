@@ -19,6 +19,17 @@ ball = {
   is_launched = false
 }
 
+function ball:launch()
+  -- Has the player already launched the ball?
+  if not self.is_launched then
+    -- No, launch the ball by giving it speed and a random direction.
+    local speed = 200
+    self.speed.x = math.random() * speed - 0.5 * speed
+    self.speed.y = -math.sqrt(speed * speed - self.speed.x * self.speed.x)
+    self.is_launched = true
+  end
+end
+
 -- Updates the position of the ball and performs collision detection.
 function ball:update(time, field, paddle)
   -- Is the ball in play?

@@ -73,14 +73,7 @@ function love.update(time)
   end
   
   if love.keyboard.isDown(" ") then
-    -- Has the player already launched the ball?
-    if not ball.is_launched then
-      -- No, launch the ball by giving it speed and a random direction.
-      local speed = 200
-      ball.speed.x = math.random() * speed - 0.5 * speed
-      ball.speed.y = -math.sqrt(speed * speed - ball.speed.x * ball.speed.x)
-      ball.is_launched = true
-    end
+    ball:launch()
   end
   
   ball:update(time, field, paddle)
