@@ -13,7 +13,10 @@ ball = {
   -- (which is called the diameter). So, while the ball's sprite is 24 pixels by 24 pixels, the
   -- radius is only 12 pixels. Most of our calculations require the radius, so it's more convenient
   -- to store the radius than the diameter.
-  radius = 12
+  radius = 12,
+  
+  -- Indicates whether the ball is in play or whether the player should launch the ball.
+  is_launched = false
 }
 
 -- Everything we need to know about the current state of the paddle.
@@ -52,6 +55,9 @@ field = {
 }
 
 function love.load()
+  -- Initialize the random number generator.
+  math.randomseed(os.time())
+  
   -- Set the resolution at which the game will run.
   love.window.setMode(1280, 720, { fullscreen = false, vsync = false })
   
@@ -83,37 +89,55 @@ function love.update(time)
       paddle.x = field.right - paddle.width
     end
   end
+  
+  if love.keyboard.isDown(" ") then
+    -- Has the player already launched the ball?
+    if not ball.is_launched then
+      -- No, launch the ball by giving it speed and a random direction.
+      local speed = 200
+      ball.speed.x = math.random() * speed - 0.5 * speed
+      ball.speed.y = -math.sqrt(speed * speed - ball.speed.x * ball.speed.x)
+      ball.is_launched = true
+    end
+  end
+  
+  -- Is the ball in play?
+  if ball.is_launched then
+    -- Yes, move the ball, taking its speed into account.
+    ball.position.x = ball.position.x + ball.speed.x * time
+    ball.position.y = ball.position.y + ball.speed.y * time
     
-  -- Move the ball, taking its speed into account.
-  ball.position.x = ball.position.x + ball.speed.x * time
-  ball.position.y = ball.position.y + ball.speed.y * time
-  
-  -- Calculcate the coordinates of the edges of the ball. We need these values when doing collision
-  -- detection.
-  ball.left = ball.position.x - ball.radius
-  ball.right = ball.position.x + ball.radius
-  ball.top = ball.position.y - ball.radius
-  ball.bottom = ball.position.y + ball.radius
-  
-  -- Bounce the ball off the sides of the playing field.
-  bounce_inside(ball, field)
-  
-  -- Bounce the ball off the paddle.
-  bounce(ball, paddle)
-  
-  -- Check if the ball collides with any of the blocks.
-  for _, block in ipairs(field.blocks) do
-    -- Has the block been destroyed already?
-    if not block.destroyed then
-      -- No, bounce the ball off the sides and corners of the block.
-      if bounce(ball, block) then
-        -- Register the hit to the block.
-        block.hits = block.hits + 1
-        
-        -- Remember whether the block is destroyed now.
-        block.destroyed = block.strength == block.hits
+    -- Calculcate the coordinates of the edges of the ball. We need these values when doing collision
+    -- detection.
+    ball.left = ball.position.x - ball.radius
+    ball.right = ball.position.x + ball.radius
+    ball.top = ball.position.y - ball.radius
+    ball.bottom = ball.position.y + ball.radius
+    
+    -- Bounce the ball off the sides of the playing field.
+    bounce_inside(ball, field)
+    
+    -- Bounce the ball off the paddle.
+    bounce(ball, paddle)
+    
+    -- Check if the ball collides with any of the blocks.
+    for _, block in ipairs(field.blocks) do
+      -- Has the block been destroyed already?
+      if not block.destroyed then
+        -- No, bounce the ball off the sides and corners of the block.
+        if bounce(ball, block) then
+          -- Register the hit to the block.
+          block.hits = block.hits + 1
+          
+          -- Remember whether the block is destroyed now.
+          block.destroyed = block.strength == block.hits
+        end
       end
     end
+  else
+    -- No, until the player launches the ball, keep it close to the paddle.
+    ball.position.x = paddle.x + 0.5 * paddle.width
+    ball.position.y = paddle.y - ball.radius - 4
   end
 end
 
