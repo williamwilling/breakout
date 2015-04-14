@@ -1,17 +1,5 @@
 require "ball"
-require "collision"
-
--- Everything we need to know about the current state of the paddle.
-paddle = {
-  -- The position of the upper left corner of the paddle in pixels.
-  x = 604, y = 680,
-  
-  -- The size of the paddle in pixels.
-  width = 72, height = 48,
-  
-  -- The speed with which the paddle moves in pixels per second.
-  speed = 200
-}
+require "paddle"
 
 -- Everything we need to know about the current state of the playing field.
 field = {
@@ -53,23 +41,12 @@ function love.load()
 end
 
 function love.update(time)
-  -- Move the paddle, based on the player's input.
   if love.keyboard.isDown("left") then
-    paddle.x = paddle.x - paddle.speed * time
-    
-    -- Make sure the paddle doesn't leave the playing field.
-    if paddle.x < field.left then
-      paddle.x = field.left
-    end
+    paddle:move_left(time, field)
   end
   
   if love.keyboard.isDown("right") then
-    paddle.x = paddle.x + paddle.speed * time
-    
-    -- Make sure the paddle doesn't leave the playing field.
-    if paddle.x + paddle.width > field.right then
-      paddle.x = field.right - paddle.width
-    end
+    paddle:move_right(time, field)
   end
   
   if love.keyboard.isDown(" ") then
@@ -106,6 +83,6 @@ function love.draw()
   -- Draw the ball.
   ball:draw()
   
-  -- Draw the sprite of the paddle.
-  love.graphics.draw(sprites.paddle, paddle.x, paddle.y)
+  -- Draw the paddle.
+  paddle:draw()
 end
