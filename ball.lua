@@ -46,7 +46,13 @@ function ball:update(time, field, paddle)
     self.bottom = self.position.y + self.radius
     
     -- Bounce the ball off the sides of the playing field.
-    bounce_inside(self, field)
+    local side = bounce_inside(self, field)
+    
+    -- Did the ball hit the bottom of the field?
+    if side == "bottom" then 
+      -- Yes, the player should launch the ball again.
+      ball.is_launched = false
+    end
     
     -- Bounce the ball off the paddle.
     bounce(self, paddle)

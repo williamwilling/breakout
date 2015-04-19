@@ -118,6 +118,8 @@ end
 
 -- Checks for a collision between the ball and the sides of the playing field and, if a collision
 -- occurs, changes the ball's speed so it moves away from the side it collided with.
+-- Returns "left", "right", "top", or "bottom" to indicate which side the ball collides with, or
+-- nil if the ball didn't collide with any side.
 function bounce_inside(ball, field)
   -- Did the ball hit the left side of the playing field?
   if ball.left <= field.left then
@@ -128,6 +130,8 @@ function bounce_inside(ball, field)
     -- back into the field.
     local distance = field.left - ball.left
     ball.position.x = ball.position.x + 2 * distance
+    
+    return "left"
   end
   
   -- Did the ball hit the right side of the playing field?
@@ -139,6 +143,8 @@ function bounce_inside(ball, field)
     -- back into the field.
     local distance = ball.right - field.right
     ball.position.x = ball.position.x - 2 * distance
+    
+    return "right"
   end
   
   -- Did the ball hit the top side of the playing field?
@@ -150,6 +156,8 @@ function bounce_inside(ball, field)
     -- back into the field.
     local distance = field.left - ball.top
     ball.position.y = ball.position.y + 2 * distance
+    
+    return "top"
   end
   
   -- Did the ball hit the bottom side of the playing field?
@@ -161,5 +169,7 @@ function bounce_inside(ball, field)
     -- back into the field.
     local distance = ball.bottom - field.bottom
     ball.position.y = ball.position.y - 2 * distance
+    
+    return "bottom"
   end
 end
