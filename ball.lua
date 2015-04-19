@@ -1,4 +1,5 @@
 require "collision"
+require "level"
 
 -- Everything we need to know about the current state of the ball.
 ball = {
@@ -50,7 +51,8 @@ function ball:update(time, field, paddle)
     
     -- Did the ball hit the bottom of the field?
     if side == "bottom" then 
-      -- Yes, the player should launch the ball again.
+      -- Yes, restart the level.
+      reset_level(field.blocks)
       ball.is_launched = false
     end
     
